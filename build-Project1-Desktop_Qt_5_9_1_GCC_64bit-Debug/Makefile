@@ -38,7 +38,7 @@ DISTNAME      = Project11.0.0
 DISTDIR = /home/marius/git/FYS4150---CompPhys/build-Project1-Desktop_Qt_5_9_1_GCC_64bit-Debug/.tmp/Project11.0.0
 LINK          = g++
 LFLAGS        = 
-LIBS          = $(SUBLIBS)  
+LIBS          = $(SUBLIBS) -larmadillo 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -211,6 +211,7 @@ DIST          = ../../../Qt/5.9.1/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../Qt/5.9.1/gcc_64/mkspecs/features/qt_config.prf \
 		../../../Qt/5.9.1/gcc_64/mkspecs/linux-g++/qmake.conf \
 		../../../Qt/5.9.1/gcc_64/mkspecs/features/spec_post.prf \
+		../Project1/.qmake.stash \
 		../../../Qt/5.9.1/gcc_64/mkspecs/features/exclusive_builds.prf \
 		../../../Qt/5.9.1/gcc_64/mkspecs/features/toolchain.prf \
 		../../../Qt/5.9.1/gcc_64/mkspecs/features/default_pre.prf \
@@ -395,6 +396,7 @@ Makefile: ../Project1/Project1.pro ../../../Qt/5.9.1/gcc_64/mkspecs/linux-g++/qm
 		../../../Qt/5.9.1/gcc_64/mkspecs/features/qt_config.prf \
 		../../../Qt/5.9.1/gcc_64/mkspecs/linux-g++/qmake.conf \
 		../../../Qt/5.9.1/gcc_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../Qt/5.9.1/gcc_64/mkspecs/features/exclusive_builds.prf \
 		../../../Qt/5.9.1/gcc_64/mkspecs/features/toolchain.prf \
 		../../../Qt/5.9.1/gcc_64/mkspecs/features/default_pre.prf \
@@ -569,6 +571,7 @@ Makefile: ../Project1/Project1.pro ../../../Qt/5.9.1/gcc_64/mkspecs/linux-g++/qm
 ../../../Qt/5.9.1/gcc_64/mkspecs/features/qt_config.prf:
 ../../../Qt/5.9.1/gcc_64/mkspecs/linux-g++/qmake.conf:
 ../../../Qt/5.9.1/gcc_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../Qt/5.9.1/gcc_64/mkspecs/features/exclusive_builds.prf:
 ../../../Qt/5.9.1/gcc_64/mkspecs/features/toolchain.prf:
 ../../../Qt/5.9.1/gcc_64/mkspecs/features/default_pre.prf:
