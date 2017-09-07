@@ -15,8 +15,10 @@ int main()
     cout << "Give me n valuables! *Points gun*" << endl;
     cin >> n;
     //initialisation
-    vec d = randu(n+1);
-    vec e = randu(n+1);
+    vec d(n+1);
+    d.fill(2);    
+    vec e(n+1);
+    e.fill(-1);
     vec dt(n+1);
     vec ft(n+1);
     vec v(n+1);
@@ -41,14 +43,14 @@ int main()
     v[n-1] = ft[n-1]/dt[n-1];
 
     //backwards solution
-    for(int i=n-1; i>0; i--){
+    for(int i=n; i>0; i--){
         v[i] = (ft[i] - e[i]*v[i+1])/dt[i];
     }
     ofstream myfile;
     string name = "values" + to_string(n) + ".txt";
     myfile.open (name);
     for(int i = 0; i<n+1; i++){
-        myfile << v[i] << "\t" <<sol[i] <<"\n";
+        myfile << x[i] <<"\t" << v[i] << "\t" <<sol[i] <<"\n";
     }
     myfile.close();
     cout << "Program run time: "<<(clock()-start)/float(CLOCKS_PER_SEC)<< " seconds" << endl;
