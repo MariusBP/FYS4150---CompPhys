@@ -15,15 +15,9 @@ int main()
     cin >> n;
     //initialisation
     int start = clock();
-    vec d(n+1);
-    d.fill(2);    
-    vec e(n+1);
-    e.fill(-1);
+    mat A(n+1,n+1);
     vec dt(n+1);
     vec ft(n+1);
-    vec v(n+1);
-    v(0) = 0;
-    v[n] = 0;
     vec x;
     x = linspace(0,1,n+1);
     vec f;
@@ -31,21 +25,22 @@ int main()
     f = h*h*100*exp(-10*x);
     vec u = 1 - (1 - exp(-10))*x - exp(-10*x);
 
-    dt[0] = d[0];
+
+    A(0,0) = 2;
+    A(0,1) = -1;
+    A(n,n) = 2;
+    A(n,n-1) = -1;
+    dt[0] = A(0,0);
     ft[0] = f[0];
 
-    //forwards substitution
-    for(int i = 1; i<n+1; i++){
-        dt[i] = d[i] - (e[i-1]*e[i-1])/dt[i-1];
-        ft[i] = f[i] - e[i-1]*ft[i-1]/dt[i-1];
+    //Setting up the rest of A
+    for(int i=1; i<n; i++){
+        A(i,i) = 2;
+        A(i,i-1) = -1;
+        A(i,i+1) = -1;
     }
 
-    v[n-1] = ft[n-1]/dt[n-1];
-
-    //backwards substitution
-    for(int i=n; i>0; i--){
-        v[i] = (ft[i] - e[i]*v[i+1])/dt[i];
-    }
+    vec v = solve(A,f);
 
     ofstream myfile;
     string name = "values" + to_string(n) + ".txt";
