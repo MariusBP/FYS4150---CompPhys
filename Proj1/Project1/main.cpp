@@ -48,7 +48,7 @@ int main()
     for(int i=n; i>0; i--){
         v[i] = (ft[i] - e[i]*v[i+1])/dt[i];
     }
-    /*
+
     ofstream myfile;//writing to file
     string name = "values" + to_string(n) + ".txt";
     myfile.open (name);
@@ -56,7 +56,7 @@ int main()
         myfile << x[i] <<"\t" << v[i] << "\t" <<u[i] <<"\n";
     }
     myfile.close();
-    */
+
     vec err = log10(abs((v-u)/u));//error
     err(0) = 0;//setting the endpoints to 0 since because of initial values they are inf
     err(n) = 0;

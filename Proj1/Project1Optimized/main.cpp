@@ -42,7 +42,7 @@ int main()
     for(int i=n; i>0; i--){
         v[i] = (ft[i] + v[i+1])/dt[i];
     }
-    /*
+
     ofstream myfile;//writing to file
     string name = "values" + to_string(n) + ".txt";
     myfile.open (name);
@@ -50,7 +50,7 @@ int main()
         myfile << x[i] <<"\t" << v[i] << "\t" <<u[i] <<"\n";
     }
     myfile.close();
-    */
+
     vec err = log10(abs((v-u)/u)); //Calculating error and ignoring the infinite terms at the end-points
     err(0) = 0;
     err(n) = 0;
