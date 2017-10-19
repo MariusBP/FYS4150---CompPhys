@@ -8,3 +8,7 @@ SOURCES += main.cpp \
     solver.cpp
 
 LIBS += -larmadillo
+
+HEADERS += \
+    planet.h \
+    solver.h

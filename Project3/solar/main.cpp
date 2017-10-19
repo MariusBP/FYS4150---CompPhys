@@ -30,12 +30,12 @@ int main()
         double TimeStep = FinalTime/((double) IntegrationPoints);
         double x[3],v[3];  // positions and velocities
         // initial position x = 1AU, y = z = 0, vx = 2pi, vy=0, vz=0
-        planet planet1(0.000003,1.,0.0,0.0,0.0,6.3,0.); // Earth: (mass,x,y,z,vx,vy,vz)
-        planet planet2(1.,0.,0.,0.,0.,0.,0.);           // Sun: (mass,x,y,z,vx,vy,vz)
+        planet earth(0.000003,1.,0.0,0.0,0.0,6.3,0.); // Earth: (mass,x,y,z,vx,vy,vz)
+        planet sun(1.,0.,0.,0.,0.,0.,0.);           // Sun: (mass,x,y,z,vx,vy,vz)
 
         solver binary_vv(5.0);
-        binary_vv.add(planet1);
-        binary_vv.add(planet2);
+        binary_vv.add(earth);
+        binary_vv.add(sun);
 
         PrintInitialValues(Dimension,TimeStep,FinalTime,x,v,IntegrationPoints);
 
