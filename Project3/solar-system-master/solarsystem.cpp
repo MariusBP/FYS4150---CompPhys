@@ -34,7 +34,7 @@ void SolarSystem::calculateForcesAndEnergy()
             double dr = deltaRVector.length();
             // Calculate the force and potential energy here
             double G = 4*pow(M_PI,2);
-            double tempForce = G*body1.mass * body2.mass * deltaRVector/pow(dr,3);
+            vec3 tempForce = G*body1.mass * body2.mass * deltaRVector/pow(dr,3);
             body1.force -= tempForce;
             body2.force += tempForce;
             m_potentialEnergy += -G*body1.mass*body2.mass/dr;
