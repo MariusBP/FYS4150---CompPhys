@@ -15,8 +15,4 @@ void VelocityVerlet::integrate(System &system, double dt)
     }
     system.applyPeriodicBoundaryConditions();
     system.calculateForces(); // New positions, recompute forces
-/*
-    for(Atom *atom : system.atoms()) {//adding the rest of the velocity due to the midpoint method
-        atom->velocity += atom->force*0.5*dt/atom->mass();
-    }*/
 }

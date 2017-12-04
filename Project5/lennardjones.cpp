@@ -79,7 +79,6 @@ void LennardJones::calculateForce(System &system, Atom &atom1,Atom &atom2)
         }
     }
 
-//    vec3 r12 = atom2.position - atom1.position;
     vec3 r12(x1x2,y1y2, z1z2);
     double rl = r12.length();
     double R12 = sigma()/rl;

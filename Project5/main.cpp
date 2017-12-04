@@ -53,6 +53,7 @@ int main(int numberOfArguments, char **argumentList)
             setw(20) << "KineticEnergy" <<
             setw(20) << "PotentialEnergy" <<
             setw(20) << "TotalEnergy" <<
+            setw(20) << "Density" <<
             setw(20) << "Diffusion Constant" << endl;
     for(int timestep=0; timestep<totalTimeSteps; timestep++) {
         system.step(dt); //Update positions of the particles
@@ -65,6 +66,7 @@ int main(int numberOfArguments, char **argumentList)
                     setw(20) << UnitConverter::energyToEv(statisticsSampler.kineticEnergy()) <<
                     setw(20) << UnitConverter::energyToEv(statisticsSampler.potentialEnergy()) <<
                     setw(20) << UnitConverter::energyToEv(statisticsSampler.totalEnergy()) <<
+                    setw(20) << UnitConverter::massToSI(statisticsSampler.density())/1e-30 <<
                     setw(20) << UnitConverter::diffusionToSI(statisticsSampler.diffusionConstant()) << endl;
         }
 

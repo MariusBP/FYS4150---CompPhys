@@ -18,42 +18,20 @@ System::~System()
     m_atoms.clear();
 }
 
-void System::applyPeriodicBoundaryConditions() {
-    //Sizes of the system in x,y and z direction
-    double size_x = m_systemSize.x();
-    double size_y = m_systemSize.y();
-    double size_z = m_systemSize.z();
-
-    for (Atom *atom: m_atoms){
-        //Looping the x-position
-        if (atom->position.x() <  0){
-            atom->initialPosition.setX(atom->initialPosition.x() + size_x);
-            atom->position.setX(atom->position.x() + size_x);
-         }
-        if (atom->position.x() >=  size_x){
-            atom->initialPosition.setX(atom->initialPosition.x() - size_x);
-            atom->position.setX( atom->position.x() - size_x);
-         }
-        //Looping y-position
-        if (atom->position.y() <  0){
-            atom->initialPosition.setY(atom->initialPosition.y() + size_y);
-            atom->position.setY(atom->position.y() + size_y);
-            }
-        if (atom->position.y() >=  size_y){
-            atom->initialPosition.setY(atom->initialPosition.y() - size_y);
-            atom->position.setY( atom->position.y() - size_y);
-            }
-        //Looping z-position
-        if (atom->position.z() <  0){
-            atom->initialPosition.setZ(atom->initialPosition.z()+ size_z);
-            atom->position.setZ(atom->position.z() + size_z);
-         }
-        if (atom->position.z() >=  size_z){
-            atom->initialPosition.setZ(atom->initialPosition.z()-size_z);
-            atom->position.setZ( atom->position.z() - size_z);
-            }
-        };
+// Account for periodic boundary conditions of the system of atoms
+void System::applyPeriodicBoundaryConditions()
+{
     // Read here: http://en.wikipedia.org/wiki/Periodic_boundary_conditions#Practical_implementation:_continuity_and_the_minimum_image_convention
+    double  x_size  = m_systemSize.x();
+    double  y_size  = m_systemSize.y();
+    double  z_size  = m_systemSize.z();
+    for(Atom *atom : m_atoms)
+    {
+        // Update x,y, and z dimensions
+        atom->position.setX(atom->position.x() - floor(atom->position.x() / x_size) * x_size);
+        atom->position.setY(atom->position.y() - floor(atom->position.y() / y_size) * y_size);
+        atom->position.setZ(atom->position.z() - floor(atom->position.z() / z_size) * z_size);
+    }
 }
 
 void System::removeTotalMomentum() {
@@ -77,19 +55,7 @@ void System::removeTotalMomentum() {
 void System::createFCCLattice(int numberOfUnitCellsEachDimension, double latticeConstant, double temperature) {
     // You implemented this function properly.
     setSystemSize(vec3(0, 0, 0) + numberOfUnitCellsEachDimension * latticeConstant); // Remember to set the correct system size!
-/*
-    Atom *atom1 = new Atom(UnitConverter::massFromSI(6.63352088e-26)); //Argon weight converted to ~40 m_u
 
-    atom1->position.set(0,0,0);
-    atom1->velocity = vec3(0,0,0);
-    m_atoms.push_back(atom1);
-
-    Atom *atom2 = new Atom(UnitConverter::massFromSI(6.63352088e-26)); //Argon weight converted to ~40 m_u
-    atom2->position.set(1,0,0);
-    atom2->velocity = vec3(0,0,0);
-    m_atoms.push_back(atom2);
-
-*/
     //different positions of the atoms in a unit cell
     vec3 a(0,0,0);
     vec3 b(latticeConstant/2,latticeConstant/2,0);
@@ -142,14 +108,6 @@ void System::calculateForces()
         }
     }
 }
-/*
- * void System::calculateForces() {
-    for(Atom *atom : m_atoms) {
-        atom->resetForce();
-    }
-    m_potential.calculateForces(*this); // this is a pointer, *this is a reference to this object
-}
-*/
 
 void System::step(double dt) {
     m_integrator.integrate(*this, dt);
