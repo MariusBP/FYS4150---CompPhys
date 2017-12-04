@@ -14,7 +14,7 @@ using namespace std;
 int main(int numberOfArguments, char **argumentList)
 {
     int numberOfUnitCells = 5;
-    double initialTemperature = UnitConverter::temperatureFromSI(300.0); // measured in Kelvin
+    double initialTemperature = UnitConverter::temperatureFromSI(50.0); // measured in Kelvin
     double latticeConstant = UnitConverter::lengthFromAngstroms(5.26); // measured in angstroms
 
     // If a first argument is provided, it is the number of unit cells
@@ -25,7 +25,7 @@ int main(int numberOfArguments, char **argumentList)
     if(numberOfArguments > 3) latticeConstant = UnitConverter::lengthFromAngstroms(atof(argumentList[3]));
 
     double dt = UnitConverter::timeFromSI(1e-15); // Measured in seconds.
-    double totalTimeSteps = 1000;
+    int totalTimeSteps = 1000;
 
     cout << "One unit of length is " << UnitConverter::lengthToSI(1.0) << " meters" << endl;
     cout << "One unit of velocity is " << UnitConverter::velocityToSI(1.0) << " meters/second" << endl;
@@ -35,8 +35,8 @@ int main(int numberOfArguments, char **argumentList)
 
     System system;
     system.createFCCLattice(numberOfUnitCells, latticeConstant, initialTemperature);
-    system.potential().setEpsilon(1.0);//UnitConverter::energyFromSI(119.8*UnitConverter::kb));
-    system.potential().setSigma(1.0);//3.405);
+    system.potential().setEpsilon(UnitConverter::temperatureFromSI(119.8));
+    system.potential().setSigma(3.405);
 
     system.removeTotalMomentum();
     cout << "Total momentum is " << system.m_momentum << setprecision(8)<<endl;
@@ -52,22 +52,32 @@ int main(int numberOfArguments, char **argumentList)
             setw(20) << "Temperature" <<
             setw(20) << "KineticEnergy" <<
             setw(20) << "PotentialEnergy" <<
-            setw(20) << "TotalEnergy" << endl;
+            setw(20) << "TotalEnergy" <<
+            setw(20) << "Diffusion Constant" << endl;
     for(int timestep=0; timestep<totalTimeSteps; timestep++) {
         system.step(dt); //Update positions of the particles
         statisticsSampler.sample(system);
         if( timestep % 100 == 0 ) {
             // Print the timestep every 100 timesteps
             cout << setw(20) << system.steps() <<
-                    setw(20) << system.time() <<
+                    setw(20) << UnitConverter::timeToSI( system.time()) <<
                     setw(20) << UnitConverter::temperatureToSI(statisticsSampler.temperature()) <<
                     setw(20) << UnitConverter::energyToEv(statisticsSampler.kineticEnergy()) <<
                     setw(20) << UnitConverter::energyToEv(statisticsSampler.potentialEnergy()) <<
-                    setw(20) << UnitConverter::energyToEv(statisticsSampler.totalEnergy()) << endl;
+                    setw(20) << UnitConverter::energyToEv(statisticsSampler.totalEnergy()) <<
+                    setw(20) << UnitConverter::diffusionToSI(statisticsSampler.diffusionConstant()) << endl;
         }
+
         movie.saveState(system);
         statisticsSampler.saveToFile(system);
     }
+    cout << setw(20) << system.steps() <<
+    setw(20) << UnitConverter::timeToSI( system.time()) <<
+    setw(20) << UnitConverter::temperatureToSI(statisticsSampler.temperature()) <<
+    setw(20) << UnitConverter::energyToEv(statisticsSampler.kineticEnergy()) <<
+    setw(20) << UnitConverter::energyToEv(statisticsSampler.potentialEnergy()) <<
+    setw(20) << UnitConverter::energyToEv(statisticsSampler.totalEnergy()) <<
+    setw(20) << UnitConverter::diffusionToSI(statisticsSampler.diffusionConstant()) << endl;
 
     movie.close();
 

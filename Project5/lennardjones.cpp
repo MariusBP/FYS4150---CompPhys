@@ -51,35 +51,36 @@ void LennardJones::calculatePotentialEnergy(Atom &atom1,Atom &atom2)
 void LennardJones::calculateForce(System &system, Atom &atom1,Atom &atom2)
 {
     vec3 Force12(0,0,0);
-/*    double x1x2 = atom2.position.x() - atom1.position.x();
+    double x1x2 = atom2.position.x() - atom1.position.x();
     double y1y2 = atom2.position.y() - atom1.position.y();
     double z1z2 = atom2.position.z() - atom1.position.z();
     if(abs(x1x2) > system.systemSize().x()*0.5){
         if(x1x2 < 0){
-            x1x2 += system.systemSize().x()*0.5;
+            x1x2 += system.systemSize().x();
         }
         else{
-            x1x2 -= system.systemSize().x()*0.5;
+            x1x2 -= system.systemSize().x();
         }
     }
     if(abs(y1y2) > system.systemSize().y()*0.5){
         if(y1y2 < 0){
-            y1y2 += system.systemSize().y()*0.5;
+            y1y2 += system.systemSize().y();
         }
         else{
-            y1y2 -= system.systemSize().y()*0.5;
+            y1y2 -= system.systemSize().y();
         }
     }
     if(abs(z1z2) > system.systemSize().z()*0.5){
         if(z1z2 < 0){
-            z1z2 += system.systemSize().z()*0.5;
+            z1z2 += system.systemSize().z();
         }
         else{
-            z1z2 -= system.systemSize().z()*0.5;
+            z1z2 -= system.systemSize().z();
         }
     }
-*/
-    vec3 r12 = atom2.position - atom1.position;//(x1x2,y1y2, z1z2);
+
+//    vec3 r12 = atom2.position - atom1.position;
+    vec3 r12(x1x2,y1y2, z1z2);
     double rl = r12.length();
     double R12 = sigma()/rl;
     double R6 = sigma()/rl;

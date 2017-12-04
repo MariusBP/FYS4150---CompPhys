@@ -41,6 +41,7 @@ void StatisticsSampler::sample(System &system)
     samplePotentialEnergy(system);
     sampleTemperature(system);
     sampleDensity(system);
+    sampleDiffusion(system);
     saveToFile(system);
 }
 
@@ -65,5 +66,17 @@ void StatisticsSampler::sampleTemperature(System &system)
 
 void StatisticsSampler::sampleDensity(System &system)
 {
+    m_density = system.m_mass/system.volume();
+}
 
+void StatisticsSampler::sampleDiffusion(System &system)
+{
+    m_diffusionConstant = 0;
+    for(Atom *atom: system.atoms())
+    {
+        vec3 r = atom->position - atom->initialPosition;
+        m_diffusionConstant += r.lengthSquared();
+    }
+
+    m_diffusionConstant = (m_diffusionConstant/(double) system.atoms().size())/(6*system.time());
 }

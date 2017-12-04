@@ -138,7 +138,7 @@ void System::calculateForces()
         for(int j=i+1; j< (int) m_atoms.size(); j++)
         {
             Atom *atom2 = m_atoms[j];
-            m_potential.calculateForce(*this, *atom1, *atom2); // Calculate and assign the force due to atom1 one atom2 and vise versa
+            m_potential.calculateForce(*this, *atom1, *atom2); // Calculate and assign the force from atom1 to atom2 and vise versa
         }
     }
 }
