@@ -35,8 +35,8 @@ int main(int numberOfArguments, char **argumentList)
 
     System system;
     system.createFCCLattice(numberOfUnitCells, latticeConstant, initialTemperature);
-    system.potential().setEpsilon(UnitConverter::energyFromSI(119.8*UnitConverter::kb));
-    system.potential().setSigma(3.405);
+    system.potential().setEpsilon(1.0);//UnitConverter::energyFromSI(119.8*UnitConverter::kb));
+    system.potential().setSigma(1.0);//3.405);
 
     system.removeTotalMomentum();
     cout << "Total momentum is " << system.m_momentum << setprecision(8)<<endl;
