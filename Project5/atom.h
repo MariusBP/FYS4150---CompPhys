@@ -11,6 +11,7 @@ public:
     vec3 velocity;
     vec3 force;
     vec3 initialPosition;
+    vec3 realPosition;
 
     Atom(double mass);
     void resetForce();

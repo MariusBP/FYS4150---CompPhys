@@ -54,15 +54,18 @@ void System::removeTotalMomentum() {
 
 void System::createFCCLattice(int numberOfUnitCellsEachDimension, double latticeConstant, double temperature) {
     // You implemented this function properly.
-    setSystemSize(vec3(0, 0, 0) + numberOfUnitCellsEachDimension * latticeConstant); // Remember to set the correct system size!
+    setSystemSize(vec3(0, 0, 0) + numberOfUnitCellsEachDimension * latticeConstant); //Setting system size N_cells*b
 
-    //different positions of the atoms in a unit cell
+    //different positions of the atoms in a given unit cell:
     vec3 a(0,0,0);
     vec3 b(latticeConstant/2,latticeConstant/2,0);
     vec3 c(0,latticeConstant/2,latticeConstant/2);
     vec3 d(latticeConstant/2,0,latticeConstant/2);
 
     vec3 latticePositions[4] = {a,b,c,d};
+
+    Random::randomSeed();
+    Random::nextGaussian(1.0, 0.5);
 
     for(int i=0; i < numberOfUnitCellsEachDimension; i++){
         for(int j=0; j < numberOfUnitCellsEachDimension; j++){
@@ -71,7 +74,8 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
                 for(vec3 r: latticePositions){
                     Atom *atom = new Atom(UnitConverter::massFromSI(6.63352088e-26)); //Argon weight converted to ~40 m_u
                     atom->position = R + r; //position of the atom we are going to place
-                    atom->initialPosition = atom->position;
+                    atom->realPosition = R + r;
+                    atom->initialPosition = R + r; //setting initial position for use in computing diffusionConstant
                     atom->resetVelocityMaxwellian(temperature); //set initial velocity due to a gaussian distribution
                     m_atoms.push_back(atom);
                     m_mass += atom->mass(); //add atom mass to total mass

@@ -64,11 +64,12 @@ void StatisticsSampler::sampleDensity(System &system)
 void StatisticsSampler::sampleDiffusion(System &system)
 {
     m_diffusionConstant = 0;
+    double meanR = 0;
     for(Atom *atom: system.atoms())
     {
-        vec3 r = atom->position - atom->initialPosition;
-        m_diffusionConstant += r.lengthSquared();
+        vec3 r = atom->realPosition - atom->initialPosition;
+        meanR += r.lengthSquared();
     }
 
-    m_diffusionConstant = (m_diffusionConstant/(double) system.atoms().size())/(6*system.time());
+    m_diffusionConstant = (meanR/(double) system.atoms().size())/(6*system.time());
 }
