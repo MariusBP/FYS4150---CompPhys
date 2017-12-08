@@ -36,8 +36,8 @@ void LennardJones::calculatePotentialEnergy(Atom &atom1,Atom &atom2)
 {
     vec3 r12           = atom2.position - atom1.position;
     double rl = r12.length();
-    double R12 = sigma()/rl;
-    double R6 = sigma()/rl;
+    double R12 = sigma()/rl; //(sigma/r)^12
+    double R6 = sigma()/rl; //(sigma/r)^6
     for(int i=0;i<11; i++){
         R12 *= sigma()/rl;
     }

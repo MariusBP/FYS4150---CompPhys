@@ -46,7 +46,7 @@ int main(int numberOfArguments, char **argumentList)
 
     StatisticsSampler statisticsSampler;
     IO movie("movie.xyz"); // To write the state to file
-    statisticsSampler.open("statistics.txt");
+    statisticsSampler.open("statistics.txt"); //To write macro-values to file
 
 
     cout << setw(20) << "Timestep" <<
