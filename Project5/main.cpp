@@ -14,7 +14,7 @@ using namespace std;
 int main(int numberOfArguments, char **argumentList)
 {
     int numberOfUnitCells = 5;
-    double initialTemperature = UnitConverter::temperatureFromSI(200.0); // measured in Kelvin
+    double initialTemperature = UnitConverter::temperatureFromSI(100.0); // measured in Kelvin
     double latticeConstant = UnitConverter::lengthFromAngstroms(5.26); // measured in angstroms
 
     // If a first argument is provided, it is the number of unit cells
@@ -36,16 +36,18 @@ int main(int numberOfArguments, char **argumentList)
     System system;
     system.createFCCLattice(numberOfUnitCells, latticeConstant, initialTemperature);
     system.potential().setEpsilon(UnitConverter::temperatureFromSI(119.8));
-    system.potential().setSigma(3.405);
+    system.potential().setSigma(3.405);//We don't need to call  unitconverter here since it already is in Angstrom
 
     system.removeTotalMomentum();
-    cout << "Total momentum is " << system.m_momentum << setprecision(8)<<endl;
+    cout << "Total momentum is " << system.m_momentum << setprecision(8) << endl;
 
     double density = system.m_mass/system.volume();
     cout <<"System density is " << density << setprecision(8) << " u/Å^3"<< endl;
 
     StatisticsSampler statisticsSampler;
     IO movie("movie.xyz"); // To write the state to file
+    statisticsSampler.open("statistics.txt");
+
 
     cout << setw(20) << "Timestep" <<
             setw(20) << "Time" <<
@@ -57,9 +59,9 @@ int main(int numberOfArguments, char **argumentList)
             setw(20) << "Diffusion Constant" << endl;
     for(int timestep=0; timestep<totalTimeSteps; timestep++) {
         system.step(dt); //Update positions of the particles
-        statisticsSampler.sample(system);
+        statisticsSampler.sample(system, initialTemperature);
         if( timestep % 100 == 0 ) {
-            // Print the timestep every 100 timesteps
+            // Print values every 100 timesteps
             cout << setw(20) << system.steps() <<
                     setw(20) << UnitConverter::timeToSI( system.time()) <<
                     setw(20) << UnitConverter::temperatureToSI(statisticsSampler.temperature()) <<
@@ -71,10 +73,11 @@ int main(int numberOfArguments, char **argumentList)
         }
 
         movie.saveState(system);
-        statisticsSampler.saveToFile(system);
+
     }
+    //Printing the final values
     cout << setw(20) << system.steps() <<
-    setw(20) << UnitConverter::timeToSI( system.time()) <<
+    setw(20) << UnitConverter::timeToSI(system.time()) <<
     setw(20) << UnitConverter::temperatureToSI(statisticsSampler.temperature()) <<
     setw(20) << UnitConverter::energyToEv(statisticsSampler.kineticEnergy()) <<
     setw(20) << UnitConverter::energyToEv(statisticsSampler.potentialEnergy()) <<

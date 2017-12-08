@@ -73,8 +73,8 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
                 vec3 R(i*latticeConstant,j*latticeConstant, k*latticeConstant);//Loop
                 for(vec3 r: latticePositions){
                     Atom *atom = new Atom(UnitConverter::massFromSI(6.63352088e-26)); //Argon weight converted to ~40 m_u
-                    atom->position = R + r; //position of the atom we are going to place
-                    atom->realPosition = R + r;
+                    atom->position = R + r; //Position of the atom we are going to place
+                    atom->realPosition = R + r; //Position of the atom with no boundaries applied
                     atom->initialPosition = R + r; //setting initial position for use in computing diffusionConstant
                     atom->resetVelocityMaxwellian(temperature); //set initial velocity due to a gaussian distribution
                     m_atoms.push_back(atom);
@@ -102,10 +102,10 @@ void System::calculateForces()
     for(Atom *atom : m_atoms) {
         atom->resetForce();
         }
-    for(int i=0; i< (int) m_atoms.size(); i++)
+    for(int i=0; i< (int) m_atoms.size(); i++) //For all atoms
     {
         Atom *atom1 = m_atoms[i];
-        for(int j=i+1; j< (int) m_atoms.size(); j++)
+        for(int j=i+1; j< (int) m_atoms.size(); j++) //For all atoms other than the ones already looped thorugh
         {
             Atom *atom2 = m_atoms[j];
             m_potential.calculateForce(*this, *atom1, *atom2); // Calculate and assign the force from atom1 to atom2 and vise versa

@@ -15,8 +15,9 @@ private:
     double m_diffusionConstant = 0;
 public:
     StatisticsSampler();
-    void saveToFile(System &system);
-    void sample(System &system);
+    void open(const char *filename);
+    void saveToFile(System &system, double initialTemperature);
+    void sample(System &system, double initialTemperature);
     void sampleKineticEnergy(System &system);
     void samplePotentialEnergy(System &system);
     void sampleTemperature(System &system);
